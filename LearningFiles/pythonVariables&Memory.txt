@@ -1,0 +1,55 @@
+Assignment does not copy:
+In Python variables don't hold values or copy them but references them
+
+How variables are handled and referenced:
+when a variable references a variable eg 
+x = 5
+y = x 
+print(id(x) == id(y))
+they both point to the same thing
+Both will hold a reference and have the same memory address
+
+Mutability:
+but this means they are referencing the same object and thats where mutability comes in
+there are mutable and immutable objects in python
+if a mutable object is referenced and changed all references are changed
+e.g. 
+x = [1, 2, 3]
+y = x
+y.append(4)
+x = [1,2,3,4]
+
+Immutability:
+if an immutable one is then only that reference is assigned to a different object
+e.g.
+x = 5
+y = x
+y = 6
+x = 5 still
+
+Python allows immutability for safety/predictability
+e.g. 
+for a dictionary the key needs to be immutable
+using String is good since its unchangeable but using a list would be bad
+
+Why unexpected changes happen: 
+when a mutable object is referenced by 2 variables eg a list is x and y
+since it is one object 2 references can cause issues
+making an explicit copy using the .copy() method works around (this but this is a shallow copy and doesnt work for nested iterables)
+Always ask yourself: "Am I sharing a reference to a mutable object? Could that cause unexpected changes?"
+If yes → use .copy() or create a new object.
+
+Contaier Mutability:
+x = [1, 2, 3]          # list is mutable
+x[0] = 99              # You can change the element
+y = x
+y[0] = 99
+print(x[0])            # 99 ← x changed because they share the list
+
+x = (1, 2, 3)          # tuple is immutable
+x[0] = 99              # ERROR! Can't modify tuple
+
+Function Parameters:
+They follow same rules
+Mutable parameters can be modified by the function (affects caller's data)
+Immutable parameters cannot be modified (only reassigned locally)

@@ -1,0 +1,70 @@
+Why errors stop execution
+Python’s philosophy on error handling
+
+Errors vs exceptions:
+An error is a serious issue the code can't recover from during runtime
+An exception is an event that disrupts normal flow that can be safeguarded against with a try/except block
+An error or exception are both examples of things that go wrong
+In Python when anything goes wrong an exception is raised
+So technically both are classed together but some exceptions are recoverable from
+Exceptions are alerted and if unhandled crash/stop the code
+
+Exception handling:
+Sometimes exceptions are not caused by the programmer
+e.g.
+User provides bad data, External resources fail, System resources are exhausted, Unexpected state occurs
+good code will catch the exception, log it and recover
+
+Validation:
+Prevents exceptiions by validating things a dev can control before introduction to system logic
+User input validation, Data format checking, Parameter validation, State checking before operations
+
+Syntax Errors vs Runtime Errors:
+Syntax errors happen during .py -> .pyc conversion and cant be caught/handled with try/except blocks
+Runtime errors happen after with already good syntax and can be caught/handled with try/except blocks
+
+Common Exceptions:
+ValueError - correct type wrong value e.g. int("Ody") vs int("123")
+TypeError - wrong type expected e.g. 5 + "10"
+IndexError - wrong index given e.g. list = [2, 3, 8]  print(list[5])
+FileNotFoundError - when a file that doesn't exist is attempted to be opened
+KeyError - a dictionary is accessed with a key that it doesn't have
+
+Stack Trace:
+This is the path taken before a crash and helps in debbuging/understanding exceptions
+
+The stack is a data structure that tracks function calls
+when a function is called its added to the stack
+When it finishes it is removed and when an error happens python prints the stack elements
+
+Why errors stop execution:
+Exception is raised (e.g., ZeroDivisionError)
+    ↓
+Python looks for a try/except handler
+    ↓
+NO HANDLER FOUND
+    ↓
+Python unwinds the stack (backs out of functions)
+    ↓
+Prints the stack trace
+    ↓
+Program terminates (stops completely)
+
+Python Exception Handling Philosophy:
+Python follows a "Better to ask forgiveness than permission" philosophy
+a lot of other languages follow "look before you leap"
+
+This means Python trys to run and handles exceptions
+Others may check everything before execution
+
+# Just try it, handle if it fails (Python)
+try:
+    file = open(filename)
+except FileNotFoundError:
+    print("File not found")
+
+# Check everything before doing it (others)
+if filename and os.path.exists(filename):
+    if os.access(filename, os.R_OK):
+        file = open(filename)
+        # ... lots of checks ...

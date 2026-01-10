@@ -1,0 +1,7 @@
+python_function_call_model.txt
+python_scope_and_namespace_model.txt
+python_mutability_deep_dive.txt
+python_oop_philosophy.txt
+python_objects_everywhere.txt
+python_standard_library_philosophy.txt
+python_interactive_workflow.txt

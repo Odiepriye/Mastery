@@ -1,0 +1,41 @@
+Typing:
+Typing in python is documenting data types and declaring what type a variable should be
+
+Type hints:
+- x = 2 and x: int = 2 
+- def greet(person) and def greet(person: str) 
+both work but in the second it shows what types are expected
+
+Rules:
+They show you what it should be type hints dont enforce types
+- def calculate(a: int, b: int) -> int: return a * b
+I can still input a String into this
+- calculate("10", 3) = "101010" #Linter would alert this but would still run
+Regardless of enforcement using Type hints helps other devs, autocomplete features, code reviews and is cleaner
+
+Handling type hints: 
+Type hints and using Linters/Type checkers show the issues as you type them before runtime
+They appear in the problems tab making Type hinting helpful
+Use linters: in IDE, Pre-commit hooks, in CI/CD pipelines
+
+Dynamic typing vs static typing:
+In Dynamic typing variable types are flexible and are determined at runtime
+In Static typing variables are declared and types cant be changed because they are declared at compile time
+Python is dynamically typed but using type hints adds extra validation when ran with a linter
+
+Strong vs Weak typing:
+In Strong typing variables of different types can't be mixed
+"2" + 4 = error
+In Weak typing they can eg JS
+Python is strongly typed.
+
+Unless necessary if you feel the urge to reassign a different type, it's usually a signal to refactor.
+# BAD - unclear intent:
+result = None
+if condition:
+    result = "success"
+
+# GOOD - explicit intent:
+result: str | None = None
+if condition:
+    result = "success"    

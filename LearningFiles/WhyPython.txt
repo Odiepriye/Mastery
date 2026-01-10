@@ -1,0 +1,18 @@
+Python is designed for humans to read and write quickly, not for machines to run fastest.
+Pythons' design philosophy is easy to read, easy to write, easy to understand.
+
+1. Execution Model (Bytecode + PVM):
+Developer friendly: You don't manage memory like C/C++. Python handles it.
+Trade-off: Slightly slower, but you write code 10x faster.
+
+2. Type System (Dynamic + Strong + Type Hints):
+Developer friendly: Start simple without types, add them when you need safety.
+Trade-off: Flexible when you're prototyping, strict when you need it.
+
+3. Variables & Memory (References, not copies):
+Developer friendly: Variables behave intuitively (both point to same thing).
+Trade-off: Must understand mutability, but it's powerful once you get it.
+
+4. Errors & Exceptions (EAFP, try/except):
+Developer friendly: Write what you want, handle failures gracefully.
+Trade-off: Must think about what can go wrong, but code is cleaner.

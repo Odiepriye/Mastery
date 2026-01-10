@@ -1,0 +1,125 @@
+Functions:
+Reusable blocks of code that can take input, process logic, give output and has its own scope.
+They follow the principle of reusability, encapsulation and abstraction.
+e.g. abstraction
+def process_payment(amount):
+    validate_amount(amount)
+    charge_card(amount)
+    return True
+
+success = process_payment(100)
+You don't need to know HOW it validates, just if it returns True/False
+you can call it without understanding internal details
+
+e.g. encapsulation & reuseability
+# Without functions :
+age1 = 25
+category1 = "adult" if age1 >= 18 else "minor"
+age2 = 17
+category2 = "adult" if age2 >= 18 else "minor"
+age3 = 30
+category3 = "adult" if age3 >= 18 else "minor"
+
+# With functions (good):
+def categorize_age(age):
+    return "adult" if age >= 18 else "minor"
+
+category1 = categorize_age(25)
+category2 = categorize_age(17)
+category3 = categorize_age(30)
+
+No need to make 3 variables with extended lifetime/scope and can use code once for different instances
+
+Lifetime/Scope:
+SCOPE = Where a variable is accessible in your code
+LIFETIME = How long a variable exists in memory
+
+x = 10  # Global scope, lives until program ends
+def my_function():
+    y = 5  # Local scope, lives only while function runs
+    print(x)  # Can access x? YES (global scope accessible from inside)
+    print(y)  # Can access y? YES (y is in this scope)
+
+print(x)  # Can access x? YES (x is global)
+print(y)  # Can access y? NO (y only existed inside function)
+         # ERROR: NameError - y is not defined
+
+LEGB Rule (Function Scope Hierarchy):
+L = Local (inside the function)
+E = Enclosing (in nested functions)
+G = Global (top level of module)
+B = Built-in (Python's built-in names)
+
+You can access scopes ABOVE you, but NOT scopes BELOW you.
+
+def outer():
+    z = "enclosing"  # E scope
+    def inner():
+        y = "local"  # L scope
+        print(x)     # G scope (can access)
+        print(z)     # E scope (can access)
+        print(y)     # L scope (can access)
+    inner()
+
+x = "global"  # G scope
+outer()
+
+Why Scope Design Exists:
+Safety/Encapsulation: Variables inside functions are protected from external modification
+Prevents unexpected behavior from shared references (remember variables & memory!)
+Prevents accidental changes from outside code
+
+Efficiency/Memory Management: Variables are deleted when scope ends
+Prevents memory accumulation from persistent global state
+Garbage collection can clean up immediately when function ends
+
+How Global Works (Important Clarification):
+global keyword ONLY accesses module-level (top-level) variables
+It does NOT access class variables or instance variables
+
+Example that works:
+person_type = "human"  # Module-level
+def change_type(new_type):
+    global person_type
+    person_type = new_type
+change_type("robot")
+print(person_type)  # robot ✓
+
+Example that DOESN'T work as expected:
+class Person:
+    type = "human"  # Class variable
+    def change_type(self, new_type):
+        global type  # Looks for module-level 'type', not class 'type'!
+        type = new_type
+
+person = Person("John", 20)
+person.change_type("robot")
+print(person.type)  # Still 'human' (class variable unchanged)
+
+The Scope Hierarchy for Global Keyword:
+global keyword → Module-level variables ONLY
+To modify class variables: use ClassName.variable or self.variable
+To modify instance variables: use self.variable
+
+Why Global is Rarely Used:
+Using global keyword allows modifying global state from inside functions
+BUT: This is dangerous and creates hidden dependencies
+Hard to test (global state makes tests fragile)
+Bugs are hard to track (who modified the global variable?)
+Solution: Use return values or classes (OOP) instead
+Classes give you instance variables (self.variable) instead of globals - MUCH safer!
+
+Good Pattern (return values):
+def login(username):
+    return username
+logged_in_user = login("alice")  # Clear, explicit
+
+Better Pattern (classes - solves global state problem):
+class User:
+    def __init__(self, username):
+        self.username = username
+    def update_profile(self, new_info):
+        self.info = new_info
+
+user = User("alice")
+user.update_profile({"age": 25})  # Encapsulated, controlled

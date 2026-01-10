@@ -1,0 +1,28 @@
+How Python runs:
+Python does not run directly from the source code
+When code is ran, the .py file is sequentially converted to .pyc (bytecode) and executed by the Python virtual machine
+On the first run the .pyc file is created and stored in a __pycache__ dir.
+Thereafter it detects if the .py was edited if it needs to recompile.
+If any changes it recompiles the full .py and creates a new .pyc file
+This recompilation takes milliseconds and has atomic file operations to handle possible production issues.
+The label of interpreted or compiled doesn't fit it because of this.
+
+Python is not purely Interpreted:
+Interpreted would mean that the .py file would get read and executed line by line
+Most widely used modern languages are no longer purely interpreted : read one line and execute it directly”
+
+Pure interpreted languages have:
+no compilation step, (python has a hidden one)
+source code is read directly, (it is not in Python)
+line by line execution,
+every re run parses everything no optimization. small optimization with (__pycache__e/.pyc)
+
+Steps to safely handle Pythons' model:
+Restart the application when deploying code changes
+Use frameworks/tools that manage code reloading safely
+You plan your deployments so there's no in-flight requests during restarts
+
+The compilation is hidden (no manual compile command) and execution is immediate
+Unlike other compiled languages errors are discovered at runtime, not before execution
+You don’t need a separate compile step
+Python will crash only when it reaches the invalid line
