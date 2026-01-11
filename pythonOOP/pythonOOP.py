@@ -73,6 +73,12 @@ Example Flow:
 3. Inheritance: Dog inherits eat(), sleep()
 4. Polymorphism: Dog overrides make_sound() to "Woof!"
 
+Principles:
+1. safety
+2. clarity
+3. reusability
+4. extensibility
+
 ═══════════════════════════════════════════════════════════════════
 PRACTICAL EXAMPLE: Zoo System
 ═══════════════════════════════════════════════════════════════════
