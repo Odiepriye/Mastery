@@ -1,4 +1,0 @@
-Continue learning — Decorators, context managers, advanced patterns?
-Practice — Write practical projects to consolidate knowledge?
-Explore specific domains — Web frameworks, data structures, testing?
-Review & consolidate — Create final summaries and documentation?

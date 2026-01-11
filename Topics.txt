@@ -1,0 +1,801 @@
+STAGE 1 — Python Foundations ✅ (DONE)
+You already passed junior fundamentals
+✅ (Python Basics):
+Execution model
+Typing (dynamic vs static basics)
+Variables
+Functions & scope
+Classes & scope
+Errors & exceptions
+✅ (Object-Oriented Programming):
+Encapsulation
+Abstraction
+Inheritance
+Polymorphism
+
+MASTERY PROJECT 1: Bank Account System
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Build a multi-user banking system demonstrating all Stage 1 concepts.
+
+Requirements:
+1. ENCAPSULATION:
+   - BankAccount class with __private balance
+   - Only allow modifications through public methods (deposit, withdraw)
+   - Cannot directly access or modify balance from outside
+   
+2. ABSTRACTION:
+   - Hide all transaction logic inside methods
+   - Users call account.withdraw(100), not internal calculations
+   - Provide simple public interface: deposit(), withdraw(), get_balance()
+   
+3. INHERITANCE:
+   - Base Account class (checking, savings, credit)
+   - SavingsAccount inherits from Account (add interest calculation)
+   - CreditAccount inherits from Account (negative balance allowed)
+   - All share core deposit/withdraw, customize behavior
+   
+4. POLYMORPHISM:
+   - Different account types respond to calculate_fee() differently
+   - Main program works with list of Account objects
+   - Loop through accounts calling calculate_interest() - each type behaves differently
+   
+5. ERROR HANDLING:
+   - Try/except for invalid transactions
+   - Raise custom exceptions (InsufficientFundsError, InvalidAmountError)
+   - Validate all inputs with type hints
+   
+6. TYPE HINTS:
+   - Annotate all method parameters and return types
+   - Use type hints to document what types are expected
+   - Ensure linter (mypy) passes without warnings
+
+Deliverables:
+- accounts.py (Account classes with full OOP implementation)
+- bank.py (Bank class to manage multiple accounts)
+- main.py (Demo script showing all features)
+- All code passes: mypy --strict, pylint, has comprehensive docstrings
+- Demonstrates you understand when and why to use each OOP pillar
+
+
+STAGE 2 — Advanced Python (Core Language Mastery)
+- Python Language Depth:
+Decorators (functions & classes)
+Context managers
+Iterators & generators
+Generator pipelines
+*args, **kwargs
+
+- Python data model (__dunder__ methods):
+Python Internals
+Bytecode & execution flow
+Stack frames
+GIL (real-world implications)
+Memory management & GC
+Import system
+
+- Typing (Beyond Basics):
+typing module deeply
+Protocol, TypedDict
+Mypy / Pyright
+Runtime vs static typing
+
+- Exit criteria:
+You can write your own decorator/context manager
+You can explain why code is slow or memory-heavy
+You can enforce typing in a real project
+
+MASTERY PROJECT 2: Advanced Data Processing Pipeline
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Build a sophisticated data processing system using advanced Python features.
+
+Requirements:
+1. DECORATORS:
+   - @timing decorator - measure function execution time
+   - @retry decorator - retry failed operations with exponential backoff
+   - @cache decorator - memoize expensive computations
+   - @validate_types decorator - enforce type checking at runtime
+   
+2. CONTEXT MANAGERS:
+   - DatabaseConnection context manager for resource management
+   - FileProcessor context manager with __enter__/__exit__
+   - Timer context manager for benchmarking
+   - Use 'with' statements properly
+   
+3. GENERATORS & ITERATORS:
+   - Generator function for streaming large files (not loading all at once)
+   - Iterator protocol implementation for custom data type
+   - Generator pipeline: data_source → filter → transform → aggregate
+   - Use yield to create infinite sequences, lazy evaluation
+   
+4. *ARGS & **KWARGS:
+   - Functions accepting variable arguments
+   - **kwargs for configuration flexibility
+   - *args for flexible data input
+   - Demonstrate when to use each pattern
+   
+5. TYPING (Advanced):
+   - typing.Protocol for structural typing
+   - typing.TypedDict for structured dictionaries
+   - Generic types: List[T], Dict[K, V], Optional[T]
+   - Union types and literal types
+   
+6. PYTHON INTERNALS:
+   - Understanding __dunder__ methods (__init__, __str__, __repr__)
+   - Implement custom __getitem__, __setitem__ for container protocol
+   - Explain what happens at bytecode level with your decorators
+
+Deliverables:
+- pipeline.py (Main data processing with generators and decorators)
+- decorators.py (Custom decorators and context managers)
+- type_definitions.py (Protocol and TypedDict examples)
+- main.py (Demo processing 1M+ items without loading all in memory)
+- Benchmark showing performance improvements from decorators
+- mypy --strict passes, full type coverage
+
+
+STAGE 3 — Programming Paradigms & Data Structures
+- Programming Paradigms:
+Object-Oriented (advanced)
+Functional programming
+Procedural programming
+When to choose which paradigm
+
+- Data Structures:
+Lists, tuples, dicts, sets (performance tradeoffs)
+collections (deque, Counter, defaultdict)
+Heap / priority queue
+Trees & graphs (practical understanding)
+
+- Algorithms (Practical):
+Big O analysis
+Searching & sorting (built-ins vs custom)
+Caching strategies
+Pagination algorithms
+Rate limiting concepts
+
+- Exit criteria:
+You choose data structures intentionally
+You explain time/space tradeoffs confidently
+
+MASTERY PROJECT 3: Task Scheduling System with Smart Data Structures
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Build a priority-based task scheduler demonstrating data structure expertise.
+
+Requirements:
+1. PROGRAMMING PARADIGMS:
+   - OOP: Task and Scheduler classes (inheritance, polymorphism)
+   - Functional: Use map, filter, reduce for task filtering
+   - Procedural: Script to execute tasks in order
+   - Show when each paradigm shines
+   
+2. DATA STRUCTURES - Intentional Choices:
+   - Use heap/priority queue for task scheduling (not list!)
+   - Use deque for recent tasks (O(1) append/popleft, not O(n))
+   - Use Counter for task type statistics
+   - Use defaultdict for grouping tasks by user
+   - Use set for fast uniqueness checks
+   - Explain why each choice beats alternatives
+   
+3. ALGORITHMS & COMPLEXITY:
+   - Implement Big O analysis for each operation
+   - Sorting tasks: different algorithms, explain tradeoffs
+   - Binary search for finding tasks by ID (O(log n))
+   - Graph: represent dependencies between tasks
+   
+4. PRACTICAL PATTERNS:
+   - Caching: memoize expensive task calculations
+   - Pagination: load tasks in batches
+   - Rate limiting: max N tasks per user per hour
+   - Retry logic: exponential backoff on failures
+   
+5. PERFORMANCE:
+   - Profile code to find bottlenecks
+   - Optimize hot paths
+   - Memory vs speed tradeoffs
+   - Handle 100k+ tasks efficiently
+
+Deliverables:
+- task_scheduler.py (Main system with intentional data structure choices)
+- algorithms.py (Sorting, searching, graph operations)
+- performance_analysis.md (Big O analysis, tradeoff explanations)
+- benchmarks.py (Compare data structures: list vs deque, set vs list)
+- Load test: handle 100k tasks, show timing for each operation
+- Documentation explaining each data structure choice and why
+
+
+STAGE 4 — Design Patterns & Software Architecture
+- Design Patterns (Pythonic):
+Factory
+Strategy
+Adapter
+Observer
+Command
+Repository
+Anti-patterns
+
+- Architectural Patterns:
+Layered architecture
+Clean / Hexagonal architecture
+Domain-driven design (lightweight)
+Monolith vs modular monolith vs microservices
+
+- Exit criteria:
+You refactor messy code into clear layers
+You justify architecture choices
+
+MASTERY PROJECT 4: E-Commerce Platform Core Architecture
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Build a well-architected e-commerce backend demonstrating design patterns.
+
+Requirements:
+1. DESIGN PATTERNS:
+   - Factory: ProductFactory creates different product types
+   - Strategy: Different pricing strategies (fixed, percentage, bulk)
+   - Adapter: Integrate with external payment providers
+   - Observer: Notify when orders status changes
+   - Command: Encapsulate operations as objects for undo/redo
+   - Repository: Abstract data access layer
+   - Avoid anti-patterns: not hardcoding, not God objects
+   
+2. ARCHITECTURAL PATTERNS:
+   - Layered: presentation → application → domain → infrastructure
+   - Clean architecture: dependency inversion
+   - Domain-driven design: Entities, Value Objects, Aggregates
+   - Clear boundaries between layers
+   
+3. STRUCTURE:
+   ecommerce/
+   ├── domain/          (Business logic, independent of framework)
+   │   ├── entities/    (Product, Order, Customer)
+   │   ├── services/    (PricingService, DiscountService)
+   │   └── exceptions/
+   ├── application/     (Orchestration layer)
+   │   ├── use_cases/   (CreateOrder, ProcessPayment)
+   │   └── dto/         (Data transfer objects)
+   ├── infrastructure/  (External dependencies)
+   │   ├── repositories/ (Database access)
+   │   ├── payments/    (Payment gateway integration)
+   │   └── notifications/
+   └── tests/           (Unit, integration, E2E)
+   
+4. KEY DEMONSTRATIONS:
+   - Repository pattern: Switch between database implementations
+   - Dependency injection: No hardcoded dependencies
+   - Service layer: Complex logic separated from web layer
+   - Anti-corruption layer: Handle external API changes
+   - Error handling: Custom exceptions, proper recovery
+
+Deliverables:
+- Clean, layered codebase with separation of concerns
+- All SOLID principles demonstrated
+- Swap implementations without changing business logic
+- Comprehensive documentation justifying architecture choices
+- Show how to test each layer independently
+- 70%+ code coverage with meaningful tests
+
+
+STAGE 5 — Django (Senior-Level)
+- Django Internals:
+Request/response lifecycle
+Middleware
+ORM internals
+QuerySet evaluation
+Signals (and their dangers)
+
+- Django ORM Mastery:
+Query optimization
+select_related vs prefetch_related
+Indexing
+Transactions & atomic blocks
+
+- Django Architecture:
+Fat models vs service layer
+App boundaries
+Settings per environment
+Custom user models
+Permissions & auth internals
+
+- Async Django:
+ASGI vs WSGI
+Async views
+Background tasks (Celery/RQ)
+WebSockets (Channels)
+
+- Exit criteria:
+You debug slow Django apps
+You design Django projects that scale
+
+MASTERY PROJECT 5: Django E-Commerce API (Production-Ready)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Build a production-grade Django API demonstrating senior-level expertise.
+
+Requirements:
+1. DJANGO INTERNALS:
+   - Explain request/response lifecycle
+   - Custom middleware for logging/auth
+   - Signal handlers with proper error handling
+   - QuerySet optimization: select_related, prefetch_related
+   - N+1 query detection and fixes
+   
+2. ORM MASTERY:
+   - Complex queries with Q objects, annotations
+   - Transactions and atomic blocks for data consistency
+   - Indexes on frequently queried fields
+   - Migration strategy for large tables
+   - Custom managers and querysets
+   
+3. ARCHITECTURE:
+   - Separate concerns: models, serializers, views, services
+   - Service layer for business logic (not in views!)
+   - API versioning strategy
+   - Custom user model
+   - Permission and auth system
+   
+4. ASYNC DJANGO:
+   - ASGI deployment
+   - Async views for I/O-heavy operations
+   - Background tasks with Celery
+   - WebSocket support with Channels (real-time updates)
+   
+5. FEATURES:
+   - RESTful API with proper status codes
+   - Pagination for large datasets
+   - Filtering, searching, sorting
+   - Error handling with meaningful messages
+   - Rate limiting per user
+   - API documentation (OpenAPI/Swagger)
+
+Deliverables:
+- Full-featured API: products, orders, payments, users
+- Query optimization: 0 N+1 issues, proper indexes
+- Comprehensive tests: models, views, services (80%+ coverage)
+- Documentation: API docs, architecture decisions, deployment guide
+- Performance metrics: average response time < 200ms for all endpoints
+- Show how to debug slow queries and optimize them
+
+
+STAGE 6 — APIs, Microservices & SaaS
+- API Design:
+REST principles
+Versioning
+Pagination
+Error handling
+OpenAPI / Swagger
+
+- Microservices (Reality Check):
+When NOT to use them
+Service boundaries
+API gateways
+Event-driven systems
+
+- SaaS Architecture:
+Multi-tenancy
+Auth (JWT, OAuth)
+Billing concepts
+Feature flags
+Rate limiting
+
+- Exit criteria:
+You can design a SaaS backend on a whiteboard
+You understand scaling tradeoffs
+
+MASTERY PROJECT 6: Multi-Tenant SaaS Platform Backend
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Build a real SaaS backend handling multi-tenancy, auth, and scaling.
+
+Requirements:
+1. MULTI-TENANCY:
+   - Tenant isolation: data from one tenant never visible to another
+   - Shared database with tenant_id on all tables (row-level security)
+   - Separate schema approach (row-level is more common)
+   - Tenant context middleware: know current tenant in all requests
+   
+2. AUTHENTICATION & AUTH:
+   - JWT tokens with refresh rotation
+   - OAuth 2.0 integration (Google, GitHub)
+   - Row-level permissions: users only see their tenant's data
+   - Service-to-service authentication
+   - API key management
+   
+3. BILLING & FEATURES:
+   - Subscription tiers (free, pro, enterprise)
+   - Feature flags: enable features per tier
+   - Usage tracking (API calls, storage, users)
+   - Metering for overage charges
+   - Stripe integration for payments
+   
+4. SCALING:
+   - Caching layer (Redis) for frequently accessed data
+   - Rate limiting per tenant
+   - Event-driven architecture for long operations
+   - Idempotency keys for safe retries
+   - Distributed tracing setup
+   
+5. API DESIGN:
+   - Versioning: /api/v1/, /api/v2/
+   - Pagination with cursor-based for large datasets
+   - Webhook system for tenant notifications
+   - Rate limiting headers (X-RateLimit-*)
+
+Deliverables:
+- Multi-tenant Django app with proper isolation
+- Auth system: local, JWT, OAuth, service accounts
+- Billing system tracking usage and subscriptions
+- Feature flag system
+- Comprehensive security review (secrets, CORS, auth flows)
+- Load test: handle 10k concurrent users across multiple tenants
+- Architecture documentation showing tenant isolation strategy
+
+
+STAGE 7 — SQL, NOSQL & Databases
+- SQL:
+Joins
+Subqueries & CTEs
+Indexes
+Query plans
+Transactions & isolation levels
+
+- Data Modeling:
+Normalization vs denormalization
+Soft deletes
+Audit logs
+Migrations strategy
+
+- Exit criteria:
+You can fix slow queries
+You design schemas confidently
+
+MASTERY PROJECT 7: Complex Database & Schema Design
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Design and optimize a complex database for an analytics platform.
+
+Requirements:
+1. SQL MASTERY:
+   - Complex joins across 10+ tables
+   - Subqueries and CTEs (WITH clauses) for readability
+   - Window functions: ROW_NUMBER(), RANK(), LAG/LEAD
+   - Query optimization: fixing slow queries
+   - Explain PLAN analysis
+   
+2. DATA MODELING:
+   - Normalization: 3NF for most tables
+   - Denormalization: strategic for performance (audit logs, stats)
+   - Soft deletes: mark deleted without removing
+   - Audit trails: track who changed what and when
+   - Temporal data: handle time-based queries
+   
+3. MIGRATIONS:
+   - Strategy for zero-downtime migrations
+   - Backward compatibility: don't break during migration
+   - Rollback strategy: always have a way back
+   - Testing migrations: verify on staging first
+   - Large table migrations: batching and chunking
+   
+4. PERFORMANCE:
+   - Indexing strategy: B-tree, hash, full-text
+   - Query plans: understand EXPLAIN output
+   - Statistics: why indexes sometimes hurt
+   - Partitioning: split huge tables
+   - Connection pooling and resource limits
+   
+5. RELIABILITY:
+   - Transactions and isolation levels
+   - Deadlock prevention
+   - Backup and restore testing
+   - Replication setup
+   - Disaster recovery procedures
+
+Deliverables:
+- Analytics schema: events, users, products, aggregations
+- 20+ complex queries showing mastery
+- Query optimization report: before/after performance
+- Migration strategy document: safe deployment approach
+- Index analysis: what indexes exist and why
+- Explain how schema handles 1TB+ data
+- Disaster recovery and backup strategy
+
+
+STAGE 8 — Testing & Quality Engineering
+- Testing Strategy:
+Unit / integration / E2E
+Testing pyramid
+Contract testing
+
+- Python & Django Testing
+Pytest advanced
+Fixtures
+Mocking vs fakes
+Property-based testing
+Django ORM & API tests
+
+- Exit criteria:
+You trust your test suite
+Refactors don't scare You
+
+MASTERY PROJECT 8: Comprehensive Test Suite & Quality System
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Build a bulletproof test suite for a Django project demonstrating QA expertise.
+
+Requirements:
+1. TESTING STRATEGY:
+   - Unit tests: test single functions/methods in isolation
+   - Integration tests: test components working together
+   - E2E tests: test complete user workflows
+   - Testing pyramid: mostly units, fewer integrations, few E2E
+   
+2. DJANGO TESTING:
+   - Model tests: validation, constraints, custom methods
+   - View tests: status codes, response data, permissions
+   - API tests: endpoint contracts, serializers
+   - Authentication tests: login, permissions, token refresh
+   - Database tests: transactions, migrations
+   
+3. PYTEST ADVANCED:
+   - Fixtures: reusable test data and setup
+   - Parametrize: test multiple scenarios with one test
+   - Mocking: mock external services, avoid real API calls
+   - Property-based testing: generate test cases automatically
+   - Custom markers: organize tests by type
+   
+4. QUALITY:
+   - Code coverage: aim for 80%+
+   - Coverage gaps analysis: what's not tested?
+   - Flaky test detection: identify unreliable tests
+   - Contract testing: verify API compatibility
+   - Load testing: ensure performance under stress
+   
+5. CI/CD INTEGRATION:
+   - Tests run automatically on pull requests
+   - Code coverage reports
+   - Linting (pylint, flake8)
+   - Type checking (mypy)
+   - Security scanning (bandit)
+
+Deliverables:
+- 200+ tests with 80%+ code coverage
+- Test report showing what's covered
+- Fixtures library for test data
+- Mocking strategy for external services
+- Performance baselines: API response times
+- CI/CD configuration (GitHub Actions / GitLab CI)
+- Documentation: how to run tests, troubleshoot failures
+- Before/after: show confidence in refactoring
+
+
+STAGE 9 — Git, Collaboration & Code Reviews
+- Git
+Internals (HEAD, refs)
+Rebase vs merge
+Interactive rebase
+Cherry-picking
+Conflict resolution
+
+- Team Practices
+Code reviews
+Commit messages
+Branching strategies
+
+MASTERY PROJECT 9: Collaborative Multi-Branch Development Workflow
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Demonstrate Git mastery and code review culture through a team project.
+
+Requirements:
+1. GIT INTERNALS:
+   - Understand object model: blobs, trees, commits, tags
+   - HEAD and refs: what they are and why they matter
+   - Understand rebase: replay commits on new base
+   - Cherry-pick: apply specific commits to other branches
+   - Interactive rebase: squash, reorder, edit commits
+   
+2. BRANCHING STRATEGY:
+   - Git flow: feature, develop, release, hotfix branches
+   - Feature branches: one feature per branch
+   - Atomic commits: each commit is a logical unit
+   - Commit messages: clear, descriptive, includes context
+   - Branch protection: require code review before merge
+   
+3. CONFLICT RESOLUTION:
+   - Merge conflicts: resolve with understanding
+   - Rebase conflicts: understand why they happen
+   - Three-way merge: understand the process
+   - Tool integration: use IDE/CLI for conflict resolution
+   
+4. CODE REVIEW CULTURE:
+   - Small PRs: easier to review, fewer conflicts
+   - Review checklist: logic, style, tests, docs, security
+   - Constructive feedback: help, don't criticize
+   - Request changes vs. Approve
+   - Resolution: learn from feedback
+   
+5. WORKFLOWS:
+   - Simulated team: create multiple feature branches
+   - Real conflicts: intentionally create and resolve
+   - Squash merges: clean history
+   - Rebase merges: linear history without merge commits
+   - Fast-forward vs. non-fast-forward
+
+Deliverables:
+- Repository with 50+ commits showing clean history
+- 10 feature branches with PRs and reviews
+- Intentional conflicts created and resolved properly
+- Commit messages following conventions
+- Branch history showing understanding of rebase vs. merge
+- Documentation: team Git workflow guide
+- Demonstrate: rebase interactive, cherry-pick, and bisect
+
+
+STAGE 10 — Software Engineering Principles
+- Principles
+DRY (and when to break it)
+SOLID
+ACID vs BASE
+YAGNI
+KISS
+Law of Demeter
+
+- Refactoring:
+Technical debt management
+Safe refactoring
+Legacy code strategies
+
+MASTERY PROJECT 10: Refactoring Legacy Codebase with SOLID Principles
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Take existing messy code and refactor it using design principles.
+
+Requirements:
+1. PRINCIPLES APPLICATION:
+   - DRY: Eliminate code duplication
+   - SOLID: Apply all 5 principles
+   - YAGNI: Remove unnecessary features
+   - KISS: Simplify overly complex code
+   - Law of Demeter: Reduce coupling
+   
+2. REFACTORING SAFELY:
+   - Write tests BEFORE refactoring
+   - Refactor incrementally, not all at once
+   - Green tests at each step
+   - Git commits showing progression
+   - Explain reasoning for each change
+   
+3. TECHNICAL DEBT:
+   - Identify technical debt
+   - Prioritize: high impact, low effort first
+   - Document: why it's debt, how to pay it
+   - Track: maintain debt register
+   
+4. LEGACY CODE PATTERNS:
+   - God objects: break into smaller classes
+   - Feature envy: move behavior to data
+   - Long methods: extract into smaller functions
+   - Primitive obsession: use value objects
+   - Shotgun surgery: group related changes
+
+Deliverables:
+- Before/after comparison showing improvements
+- 100% test coverage throughout refactoring
+- Git history showing incremental improvements
+- Document: what was refactored and why
+- Performance metrics: show improvements
+- Maintainability metrics: code complexity reduction
+- Demonstrate understanding of each principle
+
+
+STAGE 11 — Performance, Reliability & Security
+- Performance
+Profiling
+Caching
+N+1 issues
+Load testing
+
+- Reliability
+Retries
+Backoff
+Idempotency
+Monitoring
+
+- Security
+Django security internals
+OWASP Top 10
+Secrets management
+
+MASTERY PROJECT 11: Production-Ready System with Performance & Security
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Build a system demonstrating performance optimization and security hardening.
+
+Requirements:
+1. PERFORMANCE:
+   - Profile code: identify bottlenecks
+   - Optimize: caching, query optimization, indexing
+   - Benchmarks: before/after metrics
+   - Load testing: handle peak traffic
+   - Monitoring: track performance in production
+   
+2. RELIABILITY:
+   - Retry logic: with exponential backoff
+   - Circuit breakers: prevent cascading failures
+   - Idempotency: safe for repeated calls
+   - Monitoring: alerting on issues
+   - Graceful degradation: handle partial failures
+   
+3. SECURITY:
+   - Authentication: secure, not rolling your own
+   - Authorization: row-level and resource-level
+   - Encryption: in transit and at rest
+   - Secrets: never in code, use vaults
+   - OWASP Top 10: implement protections
+   
+4. OBSERVABILITY:
+   - Structured logging: JSON, searchable
+   - Distributed tracing: track requests
+   - Metrics: Prometheus/StatsD
+   - Health checks: readiness and liveness
+   - Dashboards: visualize key metrics
+
+Deliverables:
+- Performance: reduce response time by 50%+
+- Handle 1000+ concurrent users
+- Zero security vulnerabilities (OWASP)
+- Full monitoring/alerting setup
+- Graceful degradation tested
+- Documentation: performance tuning guide
+- Security audit report showing hardening
+
+
+STAGE 12 — Senior Engineer Soft Skills
+Writing design docs
+Estimation
+Mentoring
+Architecture reviews
+Tradeoff communication
+
+MASTERY PROJECT 12: Capstone - Design & Lead a Complex System
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Demonstrate senior engineering: design, leadership, communication skills.
+
+Requirements:
+1. DESIGN DOCUMENT:
+   - Problem statement: clearly define the problem
+   - Goals: what success looks like
+   - Design: architecture, tradeoffs, decisions
+   - Implementation plan: phases, milestones
+   - Risks: identified and mitigation strategies
+   - FAQ: answer anticipated questions
+   
+2. ARCHITECTURE DECISIONS:
+   - Multiple options considered
+   - Tradeoffs explicitly discussed
+   - Rationale for chosen approach
+   - Known limitations and future improvements
+   - Discussion of tech debt implications
+   
+3. SYSTEM DESIGN:
+   - End-to-end flows: user and system perspectives
+   - Data models: clear and justified
+   - API contracts: thorough documentation
+   - Deployment strategy: safe rollout
+   - Monitoring: metrics that matter
+   
+4. LEADERSHIP DEMONSTRATION:
+   - Mentoring: explain complex concepts simply
+   - Code review: constructive, educational feedback
+   - Team collaboration: gather input, incorporate feedback
+   - Risk management: identify and mitigate risks
+   - Communication: clear writing and presentation
+   
+5. COMPLEXITY HANDLED:
+   - Multi-service interactions
+   - Data consistency challenges
+   - Performance under scale
+   - Security considerations
+   - Operational concerns
+
+Deliverables:
+- Design document: 20-50 pages, thorough
+- Architecture diagram: clear, professional
+- Implementation guide: for new team members
+- Presentation: explain to stakeholders
+- Code: reference implementation
+- Monitoring setup: dashboards and alerts
+- Runbooks: how to operate the system
+- Risk assessment: what could go wrong
+- Show mastery of all previous concepts applied together
