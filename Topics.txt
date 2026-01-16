@@ -13,50 +13,6 @@ Abstraction
 Inheritance
 Polymorphism
 
-MASTERY PROJECT 1: Bank Account System
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Build a multi-user banking system demonstrating all Stage 1 concepts.
-
-Requirements:
-1. ENCAPSULATION:
-   - BankAccount class with __private balance
-   - Only allow modifications through public methods (deposit, withdraw)
-   - Cannot directly access or modify balance from outside
-   
-2. ABSTRACTION:
-   - Hide all transaction logic inside methods
-   - Users call account.withdraw(100), not internal calculations
-   - Provide simple public interface: deposit(), withdraw(), get_balance()
-   
-3. INHERITANCE:
-   - Base Account class (checking, savings, credit)
-   - SavingsAccount inherits from Account (add interest calculation)
-   - CreditAccount inherits from Account (negative balance allowed)
-   - All share core deposit/withdraw, customize behavior
-   
-4. POLYMORPHISM:
-   - Different account types respond to calculate_fee() differently
-   - Main program works with list of Account objects
-   - Loop through accounts calling calculate_interest() - each type behaves differently
-   
-5. ERROR HANDLING:
-   - Try/except for invalid transactions
-   - Raise custom exceptions (InsufficientFundsError, InvalidAmountError)
-   - Validate all inputs with type hints
-   
-6. TYPE HINTS:
-   - Annotate all method parameters and return types
-   - Use type hints to document what types are expected
-   - Ensure linter (mypy) passes without warnings
-
-Deliverables:
-- accounts.py (Account classes with full OOP implementation)
-- bank.py (Bank class to manage multiple accounts)
-- main.py (Demo script showing all features)
-- All code passes: mypy --strict, pylint, has comprehensive docstrings
-- Demonstrates you understand when and why to use each OOP pillar
-
-
 STAGE 2 — Advanced Python (Core Language Mastery)
 - Python Language Depth:
 Decorators (functions & classes)
