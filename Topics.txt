@@ -20,6 +20,7 @@ Context managers
 Iterators & generators
 Generator pipelines
 *args, **kwargs
+Lambda 
 
 - Python data model (__dunder__ methods):
 Python Internals
@@ -40,16 +41,35 @@ You can write your own decorator/context manager
 You can explain why code is slow or memory-heavy
 You can enforce typing in a real project
 
-MASTERY PROJECT 2: Advanced Data Processing Pipeline
+MASTERY PROJECT 2: Expandable Data Processing Service
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Build a sophisticated data processing system using advanced Python features.
+Build a sophisticated, service-ready data processing system combining Stage 1 fundamentals
+with Stage 2 advanced features. This is your foundation for expanding into a microservice.
 
-Requirements:
+STAGE 1 FEATURES (Foundation):
+1. CORE CLASSES & OOP:
+   - DataSource class: base class for different data sources
+   - Processor class: handles transformations
+   - Pipeline class: orchestrates workflow
+   - Custom exceptions for error handling
+   - Encapsulation: private/public attributes with properties
+   - Inheritance: extend base processors (CSVProcessor, JSONProcessor)
+   - Polymorphism: different sources/processors same interface
+   
+2. FUNCTIONS & SCOPE:
+   - Pure functions for transformations (no side effects)
+   - Closures for creating specialized processors
+   - Proper variable scoping: local, enclosing, global, built-in
+   - Error handling with try/except/finally
+   - Meaningful return values and error propagation
+
+STAGE 2 FEATURES (Advanced):
 1. DECORATORS:
    - @timing decorator - measure function execution time
    - @retry decorator - retry failed operations with exponential backoff
    - @cache decorator - memoize expensive computations
    - @validate_types decorator - enforce type checking at runtime
+   - @log_execution decorator - structured logging
    
 2. CONTEXT MANAGERS:
    - DatabaseConnection context manager for resource management
@@ -59,7 +79,7 @@ Requirements:
    
 3. GENERATORS & ITERATORS:
    - Generator function for streaming large files (not loading all at once)
-   - Iterator protocol implementation for custom data type
+   - Iterator protocol implementation (custom __iter__, __next__)
    - Generator pipeline: data_source → filter → transform → aggregate
    - Use yield to create infinite sequences, lazy evaluation
    
@@ -70,23 +90,51 @@ Requirements:
    - Demonstrate when to use each pattern
    
 5. TYPING (Advanced):
-   - typing.Protocol for structural typing
-   - typing.TypedDict for structured dictionaries
+   - typing.Protocol for structural typing (DataSource protocol)
+   - typing.TypedDict for structured dictionaries (ConfigDict, ResultDict)
    - Generic types: List[T], Dict[K, V], Optional[T]
-   - Union types and literal types
+   - Union types and literal types for strict API
    
-6. PYTHON INTERNALS:
-   - Understanding __dunder__ methods (__init__, __str__, __repr__)
-   - Implement custom __getitem__, __setitem__ for container protocol
-   - Explain what happens at bytecode level with your decorators
+6. PYTHON INTERNALS (__DUNDER__ METHODS):
+   - __init__, __str__, __repr__ for clear object representation
+   - __len__, __iter__ for container protocol
+   - __getitem__, __setitem__ for indexing support
+   - __enter__, __exit__ for context management
+   - __call__ for callable objects
+   - Understand what happens at bytecode level
+
+7. EXTENSIBILITY FOR SERVICES:
+   - Plugin architecture: register custom processors
+   - Configuration system: load from dict/JSON/YAML
+   - Logging setup: ready for production monitoring
+   - Health checks: validate system state
+   - Stats tracking: performance metrics collection
 
 Deliverables:
-- pipeline.py (Main data processing with generators and decorators)
-- decorators.py (Custom decorators and context managers)
-- type_definitions.py (Protocol and TypedDict examples)
+- core/
+  ├── data_sources.py (DataSource base + CSV/JSON implementations)
+  ├── processors.py (Processor base + specific processors)
+  ├── pipeline.py (Pipeline orchestration with generators)
+  ├── exceptions.py (Custom exceptions)
+  └── types.py (Protocol, TypedDict definitions)
+  
+- utilities/
+  ├── decorators.py (timing, retry, cache, validate_types, logging)
+  ├── context_managers.py (file handlers, timers, connections)
+  └── validators.py (type validation, data validation)
+  
 - main.py (Demo processing 1M+ items without loading all in memory)
-- Benchmark showing performance improvements from decorators
+- config.py (Configuration system for extensibility)
+- requirements.txt (Dependencies for future service deployment)
+- performance_benchmarks.py (Timing & memory profiling)
+- health_check.py (System readiness validation)
+
+Validation:
 - mypy --strict passes, full type coverage
+- Processes 1M+ items efficiently
+- 0 memory issues (proves generators work)
+- All Stage 1 OOP principles demonstrated
+- Service-ready structure (importable modules, clear APIs)
 
 
 STAGE 3 — Programming Paradigms & Data Structures
