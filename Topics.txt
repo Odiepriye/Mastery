@@ -17,10 +17,9 @@ STAGE 2 — Advanced Python (Core Language Mastery)
 - Python Language Depth:
 Decorators (functions & classes)
 Context managers
-Iterators & generators
-Generator pipelines
+Iterators & generators with generator pipelines
 *args, **kwargs
-Lambda 
+Lambda functions
 
 - Python data model (__dunder__ methods):
 Python Internals
