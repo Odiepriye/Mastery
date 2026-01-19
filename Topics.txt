@@ -20,9 +20,9 @@ Context managers
 Iterators & generators with generator pipelines
 *args, **kwargs
 Lambda functions
+__dunder__methods
 
-- Python data model (__dunder__ methods):
-Python Internals
+- Python Internals:
 Bytecode & execution flow
 Stack frames
 GIL (real-world implications)
