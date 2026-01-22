@@ -14,7 +14,7 @@ Inheritance
 Polymorphism
 
 STAGE 2 — Advanced Python (Core Language Mastery)
-- Python Language Depth:
+✅  Python Language Depth:
 Decorators (functions & classes)
 Context managers
 Iterators & generators with generator pipelines
@@ -29,7 +29,7 @@ GIL (real-world implications)
 Memory management & GC
 Import system
 
-- Typing (Beyond Basics):
+✅  Typing (Beyond Basics):
 typing module deeply
 Protocol, TypedDict
 Mypy / Pyright
