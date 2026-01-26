@@ -1,0 +1,482 @@
+MASTERY PROJECT 2: Expandable Data Processing Service
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Real-World Use Case: ETL Pipeline (Extract, Transform, Load)
+Build a data pipeline that processes large datasets from multiple sources,
+transforms them, and outputs results. Foundation for REST API services.
+
+REAL-WORLD SCENARIO:
+├─ Extract: CSV/JSON files, APIs, databases
+├─ Transform: Filter, validate, enrich, aggregate data
+├─ Load: Output to files, databases, APIs
+└─ Metrics: Track processing time, error rates, throughput
+
+
+═══════════════════════════════════════════════════════════════════
+STAGE 1 FEATURES (OOP Foundations)
+═══════════════════════════════════════════════════════════════════
+
+1. CORE ARCHITECTURE:
+
+   A. DataSource Protocol (Structural Typing)
+      - What it does: Defines interface any data source must implement
+      - Methods: fetch(query: str) -> Iterator[dict]
+      - Implementations:
+        * CSVDataSource(file_path) - Read CSV files
+        * JSONDataSource(file_path) - Read JSON files
+        * APIDataSource(endpoint) - Fetch from APIs
+      - Benefit: Easy to add new sources without modifying core code
+
+   B. Processor (Transformation Logic)
+      - What it does: Takes data, transforms it, yields results
+      - Methods:
+        * process(data: Iterator[dict]) -> Iterator[dict]
+        * __str__() for debugging
+      - Implementations:
+        * FilterProcessor(column: str, value: Any)
+        * ValidateProcessor(schema: dict) - Validate data structure
+        * EnrichProcessor(mapping: dict) - Add computed fields
+        * AggregateProcessor(group_by: str, agg_func: str)
+
+   C. Pipeline (Orchestration)
+      - What it does: Chains data sources → processors → output
+      - Key Methods:
+        * add_source(source: DataSource)
+        * add_processor(processor: Processor)
+        * execute() -> Iterator[dict] (lazy evaluation!)
+        * get_stats() -> dict (metadata about execution)
+      - OOP Principles:
+        * Encapsulation: Private _source, _processors
+        * Inheritance: Base Pipeline with specialized versions
+        * Polymorphism: Different sources/processors same interface
+
+   D. Custom Exceptions
+      - DataSourceError: File not found, API unreachable
+      - ProcessingError: Invalid data, transformation failed
+      - ValidationError: Data doesn't match schema
+      - PipelineError: Invalid configuration
+
+2. FUNCTIONS & SCOPE:
+   - Pure transformation functions (no side effects)
+   - Closures: create_filter(column, value) -> Processor
+   - Scope handling: Global config vs local state
+   - Error propagation: Raise vs handle vs log
+
+
+═══════════════════════════════════════════════════════════════════
+STAGE 2 FEATURES (Advanced Patterns)
+═══════════════════════════════════════════════════════════════════
+
+1. DECORATORS (Distributed across modules):
+
+   A. @timing
+      Location: utilities/decorators.py
+      Measures execution time of any function
+      Used on: process(), fetch(), transform()
+      Example: "fetch_data took 0.234s"
+
+   B. @retry(max_attempts=3, backoff=exponential)
+      Retries failed operations (API calls, file reads)
+      Exponential backoff: 1s, 2s, 4s delays
+      Used on: APIDataSource.fetch()
+      Real-world: Handle transient network failures
+
+   C. @cache
+      Memoizes expensive operations (avoid reprocessing)
+      Used on: ValidateProcessor (schema validation)
+      Real-world: Skip validation on repeated identical data
+
+   D. @validate_types
+      Runtime type checking (catch bugs early)
+      Used on: All public methods
+      Real-world: Fail fast with clear error messages
+
+   E. @log_execution
+      Structured logging (timestamp, duration, result)
+      JSON format for parsing by log aggregators
+      Real-world: Production debugging and monitoring
+
+2. CONTEXT MANAGERS:
+
+   A. DataSourceManager(source: DataSource)
+      - __enter__: Connect/open file
+      - __exit__: Cleanup resources, close file/connection
+      - Guarantees: File always closed, connection always closed
+      - Example: with DataSourceManager(csv_source) as source:
+
+   B. ProcessingTimer(name: str)
+      - __enter__: Record start time
+      - __exit__: Calculate elapsed, log duration
+      - Tracks: Total time, per-processor time
+      - Output: Structured metrics for benchmarking
+
+   C. TransactionContext(pipeline: Pipeline)
+      - __enter__: Begin transaction (if applicable)
+      - __exit__: Commit on success, rollback on error
+      - Guarantees: All-or-nothing semantics
+
+3. GENERATORS & ITERATORS:
+
+   A. Generator-based Data Streaming
+      Problem: 1M items = 1GB+ RAM if loaded all at once
+      Solution: Generator yields items one-by-one
+      
+      pipeline = Pipeline()
+          .add_source(CSVDataSource('huge_file.csv'))  # 1M rows
+          .add_processor(FilterProcessor('status', 'active'))
+          .add_processor(ValidateProcessor(schema))
+      
+      for record in pipeline.execute():  # Memory: ~1 record at a time
+          print(record)
+
+   B. Iterator Protocol
+      - Implement __iter__() to make Pipeline iterable
+      - Implement __next__() for stepping through data
+      - Allows: for record in pipeline (natural Python syntax)
+
+   C. Generator Pipelines
+      Each processor yields to next:
+      data_source → filter (yield) → validate (yield) → aggregate (yield)
+      Benefits: Lazy evaluation, memory efficient, composable
+
+4. *ARGS & **KWARGS:
+
+   A. *args for variable processors
+      pipeline.add_processors(filter_proc, validate_proc, enrich_proc)
+      
+   B. **kwargs for configuration
+      FilterProcessor(column='status', operator='==', value='active')
+      EnrichProcessor(fields={'computed_age': lambda r: 2024 - r['birth_year']})
+      
+   C. Real-world: Config from dict
+      config = load_yaml('pipeline_config.yaml')
+      pipeline = Pipeline(**config['pipeline'])
+
+5. TYPING (Advanced):
+
+   A. Protocol (Structural Typing)
+      class DataSourceProtocol(Protocol):
+          def fetch(self, query: str) -> Iterator[dict]: ...
+      
+      Benefit: CSVDataSource doesn't inherit from protocol,
+               but satisfies it by having fetch() method
+      Real-world: Swap implementations without code changes
+
+   B. TypedDict (Structured Data)
+      class RecordDict(TypedDict):
+          id: int
+          name: str
+          email: str
+          status: Literal['active', 'inactive', 'pending']
+      
+      Benefit: Type checker catches typos (record['emai'] → error)
+               IDE autocomplete works
+
+   C. Generic Types
+      class Pipeline(Generic[T]):
+          def execute(self) -> Iterator[T]: ...
+      
+      pipeline: Pipeline[RecordDict] = Pipeline()
+      Type checker knows records are RecordDict
+
+   D. Union Types for flexible processing
+      ProcessorResult = dict | RecordDict | list
+      def process(data: ProcessorResult) -> ProcessorResult: ...
+
+6. DUNDER METHODS:
+
+   A. __init__, __str__, __repr__
+      Clear debugging:
+      >>> str(pipeline)
+      "Pipeline(3 processors, 1M items expected)"
+      
+      >>> repr(pipeline)
+      "Pipeline(source=CSVDataSource('users.csv'), processors=[...])"
+
+   B. __len__ for Pipeline
+      len(pipeline) returns count of items processed
+      Real-world: Progress tracking
+
+   C. __iter__ and __next__ for iteration
+      for record in pipeline: ...
+      Natural Python syntax
+
+   D. __getitem__ for accessing pipeline stages
+      stage_1 = pipeline[0]  # First processor
+      stage_2 = pipeline[1]  # Second processor
+
+   E. __call__ for making processor reusable
+      validator = ValidateProcessor(schema)
+      result1 = validator(data_batch_1)
+      result2 = validator(data_batch_2)
+
+7. SERVICE READINESS:
+
+   A. Plugin Architecture
+      - Register custom processors at runtime
+      - processor_registry.register('custom_filter', CustomFilterProc)
+      - Load: processor_class = processor_registry.get('custom_filter')
+
+   B. Configuration System
+      - Load from YAML/JSON/dict
+      - Validate schema (no typos in config)
+      - Support environment variable substitution
+      - Example: config.get('api.timeout', default=30)
+
+   C. Structured Logging
+      - JSON format (parse by ELK Stack, Datadog, etc)
+      - Log levels: DEBUG, INFO, WARNING, ERROR, CRITICAL
+      - Include: timestamp, duration, item_count, errors, metrics
+
+   D. Health Checks
+      - is_source_connected() → bool
+      - validate_config() → Result
+      - check_dependencies() → Result
+      - Ready for Kubernetes liveness/readiness probes
+
+   E. Stats & Metrics
+      - Items processed, errors, processing time
+      - Per-processor timing breakdown
+      - Throughput (items/second)
+      - Memory usage tracking
+
+
+═══════════════════════════════════════════════════════════════════
+PROJECT STRUCTURE (Service-Ready)
+═══════════════════════════════════════════════════════════════════
+
+data_processor/
+├── core/
+│   ├── __init__.py
+│   ├── types.py
+│   │   ├── RecordDict (TypedDict)
+│   │   ├── ProcessorConfig (TypedDict)
+│   │   ├── DataSourceProtocol
+│   │   └── ProcessorProtocol
+│   │
+│   ├── exceptions.py
+│   │   ├── DataProcessorError (base)
+│   │   ├── DataSourceError
+│   │   ├── ProcessingError
+│   │   ├── ValidationError
+│   │   └── ConfigurationError
+│   │
+│   ├── data_sources.py
+│   │   ├── DataSource (base class)
+│   │   ├── CSVDataSource(file_path)
+│   │   ├── JSONDataSource(file_path)
+│   │   ├── APIDataSource(endpoint, headers)
+│   │   └── DataSourceRegistry (plugin system)
+│   │
+│   ├── processors.py
+│   │   ├── Processor (base class)
+│   │   ├── FilterProcessor
+│   │   ├── ValidateProcessor
+│   │   ├── TransformProcessor
+│   │   ├── EnrichProcessor
+│   │   ├── AggregateProcessor
+│   │   └── ProcessorRegistry (plugin system)
+│   │
+│   └── pipeline.py
+│       ├── Pipeline (main orchestrator)
+│       ├── PipelineBuilder (builder pattern)
+│       ├── PipelineStats (metrics)
+│       └── PipelineValidator (config validation)
+│
+├── utilities/
+│   ├── __init__.py
+│   │
+│   ├── decorators.py
+│   │   ├── @timing
+│   │   ├── @retry(max_attempts, backoff)
+│   │   ├── @cache
+│   │   ├── @validate_types
+│   │   └── @log_execution
+│   │
+│   ├── context_managers.py
+│   │   ├── DataSourceManager
+│   │   ├── ProcessingTimer
+│   │   └── TransactionContext
+│   │
+│   └── validators.py
+│       ├── validate_schema(data, schema)
+│       ├── validate_config(config)
+│       ├── is_valid_type(value, type_hint)
+│       └── TypeValidator
+│
+├── config.py
+│   ├── ConfigLoader (YAML/JSON/dict)
+│   ├── Config (singleton pattern)
+│   ├── get_config() -> Config
+│   └── load_from_env()
+│
+├── logging_setup.py
+│   ├── setup_logger(name) -> Logger
+│   ├── StructuredLogger (JSON output)
+│   └── LogLevel enum
+│
+├── health_check.py
+│   ├── HealthCheck (class)
+│   ├── check_all() -> HealthStatus
+│   ├── is_ready() -> bool
+│   └── get_status() -> dict
+│
+├── main.py
+│   ├── Example 1: Process CSV file
+│   ├── Example 2: Process from API
+│   ├── Example 3: Multi-processor pipeline
+│   ├── Example 4: 1M item stress test
+│   └── Example 5: Error handling demo
+│
+├── performance_benchmarks.py
+│   ├── benchmark_csv_processing()
+│   ├── benchmark_memory_usage()
+│   ├── benchmark_processor_throughput()
+│   └── profile_memory() (memory profiler)
+│
+├── requirements.txt
+│   ├── pyyaml (config loading)
+│   ├── requests (API calls)
+│   ├── pydantic (validation)
+│   ├── python-dotenv (env vars)
+│   └── memory-profiler (benchmarking)
+│
+├── tests/
+│   ├── test_data_sources.py
+│   ├── test_processors.py
+│   ├── test_pipeline.py
+│   ├── test_decorators.py
+│   └── test_integration.py
+│
+├── examples/
+│   ├── example_config.yaml
+│   ├── example_data.csv
+│   └── example_output.json
+│
+└── README.md (Usage guide)
+
+
+═══════════════════════════════════════════════════════════════════
+IMPLEMENTATION ROADMAP
+═══════════════════════════════════════════════════════════════════
+
+Phase 1: Core Architecture (Week 1)
+├─ types.py: Define all TypedDict and Protocol classes
+├─ exceptions.py: Custom exception hierarchy
+├─ core/data_sources.py: Base class + CSV/JSON implementations
+├─ core/processors.py: Base class + 3 processors
+└─ core/pipeline.py: Basic pipeline execution
+
+Phase 2: Advanced Features (Week 2)
+├─ utilities/decorators.py: All 5 decorators
+├─ utilities/context_managers.py: All 3 context managers
+├─ config.py: Configuration system
+├─ Pipeline improvements: Add caching, stats tracking
+└─ Error handling: Comprehensive try/except
+
+Phase 3: Service Readiness (Week 3)
+├─ Plugin architecture: Registry pattern
+├─ Health checks: Comprehensive validation
+├─ Structured logging: JSON output
+├─ Metrics collection: Performance tracking
+└─ Documentation: README + docstrings
+
+Phase 4: Testing & Validation (Week 4)
+├─ Unit tests: Core functionality
+├─ Integration tests: Full pipeline
+├─ Performance benchmarks: 1M items, memory profiling
+├─ Type checking: mypy --strict
+└─ Code review: Clean, production-ready
+
+
+═══════════════════════════════════════════════════════════════════
+REAL-WORLD USE CASES (After Mastery Project)
+═══════════════════════════════════════════════════════════════════
+
+1. REST API Service (Stage 6)
+   POST /api/v1/process
+   ├─ Body: { "source": "csv", "file": "users.csv", "processors": [...] }
+   ├─ Returns: { "job_id": "123", "status": "processing" }
+   └─ GET /api/v1/process/123 → { "status": "complete", "items": 1000 }
+
+2. Microservice (Stage 6)
+   ├─ FastAPI/Flask wrapper around Pipeline
+   ├─ Kubernetes deployment
+   ├─ Health endpoints for orchestration
+   └─ Metrics to Prometheus
+
+3. Event-Driven (Stage 6)
+   ├─ Kafka/RabbitMQ: Receive data events
+   ├─ Pipeline processes each event
+   ├─ Output to database/API
+   └─ Async processing with Celery
+
+4. Data Lake ETL (Real-world)
+   ├─ Extract: S3, databases
+   ├─ Transform: Data cleaning, enrichment
+   ├─ Load: Data warehouse, Elasticsearch
+   └─ Orchestrate with Airflow
+
+
+═══════════════════════════════════════════════════════════════════
+VALIDATION CRITERIA (Must Pass)
+═══════════════════════════════════════════════════════════════════
+
+Code Quality:
+✓ mypy --strict passes (full type coverage)
+✓ All functions have docstrings (Google style)
+✓ All classes have type hints
+✓ No pylint/flake8 warnings
+
+Functionality:
+✓ Processes 1M+ items in <10 seconds
+✓ Memory usage stays constant (proves generators work)
+✓ All Stage 1 OOP principles demonstrated
+✓ All Stage 2 advanced features used meaningfully
+
+Performance:
+✓ CSV processing: >100k items/second
+✓ Memory footprint: <50MB (regardless of data size)
+✓ Error recovery: Retry logic works
+✓ Caching: Repeated operations are faster
+
+Real-World Readiness:
+✓ Proper error messages (helpful for debugging)
+✓ Logging is structured (JSON, parseable)
+✓ Configuration is externalized (config.yaml)
+✓ Health checks work (ready for service orchestration)
+✓ Metrics tracked (performance visibility)
+
+Tests:
+✓ Unit tests: Core components (>80% coverage)
+✓ Integration tests: Full pipeline (end-to-end)
+✓ Error cases: Handled gracefully
+✓ Edge cases: Empty data, huge data, invalid data
+
+
+═══════════════════════════════════════════════════════════════════
+KEY SUCCESS METRICS
+═══════════════════════════════════════════════════════════════════
+
+1. Code Quality
+   - Type safety: 100% mypy --strict pass
+   - Test coverage: >80%
+   - Documentation: Every public API documented
+
+2. Performance
+   - Throughput: >100k items/sec
+   - Memory: Constant, independent of data size
+   - Latency: Sub-second for 10k items
+
+3. Extensibility
+   - New processor in <10 minutes (plugin system works)
+   - New data source in <10 minutes (Protocol works)
+   - Custom config in <5 minutes (Config system works)
+
+4. Production Readiness
+   - Survives 24h stress test (1M items/hour)
+   - Recovers from transient failures (retry works)
+   - Observable (metrics, logs, health checks)
+   - Deployable to Kubernetes (health endpoints)
+
+This is a REAL platform that can grow into production services!
